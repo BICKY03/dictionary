@@ -19,9 +19,13 @@ const DictionaryApp = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    // Case insensitive search
+    if (inputText.trim() === '') {
+      setDictionary("Please enter a word to search.");
+      return;
+    }
+
     const entry = data.find(item => item.word.toLowerCase() === inputText.toLowerCase());
-    
+
     if (entry) {
       setDictionary(entry.meaning);
     } else {
