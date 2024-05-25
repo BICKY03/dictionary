@@ -2,50 +2,48 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 
-const data=
-[
+const data = [
+  { word: "React", meaning: "A JavaScript library for building user interfaces." },
+  { word: "Component", meaning: "A reusable building block in React." },
+  { word: "State", meaning: "An object that stores data for a component." }
+];
 
-    { word: "React", meaning: "A JavaScript library for building user interfaces." },
+const DictionaryApp = () => {
+  const [inputText, setInputText] = useState('');
+  const [dictionary, setDictionary] = useState('');
 
-    { word: "Component", meaning: "A reusable building block in React." },
+  const handleChange = (event) => {
+    setInputText(event.target.value);
+  };
 
-    { word: "State", meaning: "An object that stores data for a component." }
-
-]
-
-const DictionaryApp=()=>{
- const[inputText,setInputText]=useState('');
- const[dictionary,setDictionary]=useState('');
-
- const handleChange=(event)=>{
-  setInputText(event.target.value);
-
- }
-
- const handleSubmit=(event)=>{
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    const entry=data.find(item=>item.word === inputText);
-
-    if(entry){
+    
+    // Case insensitive search
+    const entry = data.find(item => item.word.toLowerCase() === inputText.toLowerCase());
+    
+    if (entry) {
       setDictionary(entry.meaning);
-      return
+    } else {
+      setDictionary("Word not found in the dictionary.");
     }
+  };
 
-    setDictionary("Word not found in the dictionary.")
- }
-  
   return (
     <div className="App">
-      |<h1>Dictionary App</h1>
+      <h1>Dictionary App</h1>
 
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder='Search for a word' onChange={handleChange}/>
-
+        <input 
+          type="text" 
+          placeholder='Search for a word' 
+          value={inputText} 
+          onChange={handleChange} 
+        />
         <button type="submit">Search</button>
       </form>
 
-      <div>Defintion:{dictionary}</div>
+      <div>Definition: {dictionary}</div>
     </div>
   );
 }
