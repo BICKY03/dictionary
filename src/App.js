@@ -1,55 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
-import { useState } from 'react';
-
-const data = [
-  { word: "React", meaning: "A JavaScript library for building user interfaces." },
+import "./App.css";
+import { useState } from "react";
+const words = [
+  {
+    word: "React",
+    meaning: "A JavaScript library for building user interfaces.",
+  },
   { word: "Component", meaning: "A reusable building block in React." },
-  { word: "State", meaning: "An object that stores data for a component." }
+  { word: "State", meaning: "An object that stores data for a component." },
 ];
 
-const DictionaryApp = () => {
-  const [inputText, setInputText] = useState('');
-  const [dictionary, setDictionary] = useState('');
+function App() {
+  const [search, setSearch] = useState("");
+  const [meaning, setMeaning] = useState("");
+  const [wordFound, setWordFound] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
-  const handleChange = (event) => {
-    setInputText(event.target.value);
-  };
+  const handleSearch = () => {
+    const foundWord = words.find(
+      (word) => word.word.toLowerCase() === search.toLowerCase()
+    );
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    
-    if (inputText.trim() === '') {
-      setDictionary("Please enter a word to search.");
-      return;
-    }
-
-    const entry = data.find(item => item.word.toLowerCase() === inputText.toLowerCase());
-
-    if (entry) {
-      setDictionary(entry.meaning);
+    if (foundWord) {
+      setMeaning(foundWord.meaning);
+      setWordFound(true);
     } else {
-      setDictionary("Word not found in the dictionary.");
+      setWordFound(false);
     }
+    setIsClicked(true);
   };
-
   return (
     <div className="App">
       <h1>Dictionary App</h1>
-
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          placeholder='Search for a word' 
-          value={inputText} 
-          onChange={handleChange} 
-        />
-        <button type="submit">Search</button>
-      </form>
-
-      <div>Definition: {dictionary}</div>
+      <input
+        type="text"
+        placeholder="Search for a word..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <button onClick={handleSearch}>Search</button>
+      <h4>Definition:</h4>
+      {isClicked ? (
+        wordFound ? (
+          <p>{meaning}</p>
+        ) : (
+          <p>Word not found in the dictionary.</p>
+        )
+      ) : null}
     </div>
   );
 }
 
-export default DictionaryApp;
+export default App;
